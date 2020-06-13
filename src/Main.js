@@ -1,8 +1,5 @@
-import React, { Component } from "react";
-import {
-  BrowserRouter,
-  HashRouter
-} from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, HashRouter, Redirect } from "react-router-dom";
 import Content from "./Content";
 import Header from "./Header";
 import styled from 'styled-components';
@@ -12,12 +9,14 @@ const AppFrame = styled.div`
 `;
 
 function Main() {
+  const [editable, setEditable] = useState(false);
+
   return(
     <AppFrame>
-      <BrowserRouter>
-        <Header/>
-        <Content/>
-      </BrowserRouter>
+      {/* <BrowserRouter> */}
+          <Header editable={editable} onEditableChange={() => setEditable(!editable)}/>
+          <Content editable={editable}/>
+      {/* </BrowserRouter> */}
     </AppFrame>
   );
 }

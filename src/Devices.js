@@ -1,24 +1,16 @@
 import React, { Component } from "react";
+import List from '@material-ui/core/List';
+import DeviceList from './DeviceList';
 
-const Stuff = ({ links, location }) => {
-  const path_components = location.pathname.split("/");
-  const parent = "/" + path_components[path_components.length - 2];
-  const name = path_components[path_components.length - 1] || "Stuff";
+const Devices = (props) => {
 
   return (
     <div>
-      <h2>STUFF</h2>
-      <p>Mauris sem velit, vehicula eget sodales vitae,
-      rhoncus eget sapien:</p>
-      <ol>
-        <li>Nulla pulvinar diam</li>
-        <li>Facilisis bibendum</li>
-        <li>Vestibulum vulputate</li>
-        <li>Eget erat</li>
-        <li>Id porttitor</li>
-      </ol>
+      <List>
+          <DeviceList items={props.items}></DeviceList>
+      </List>
     </div>
   );
 }
  
-export default Stuff;
+export default Devices;

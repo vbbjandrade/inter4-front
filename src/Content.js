@@ -1,19 +1,11 @@
-import React, { useState, useEffect, useHistory, useLocation, Component } from "react";
+import React from "react";
 import { Switch, Route, withRouter, } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styled from 'styled-components';
 
 import Home from "./Home";
+import Settings from "./Settings";
 import Devices from "./Devices";
-import Members from "./Members";
-import Location from "./Location"
-
-
-function getPathDepth (location) {
-    let pathArr = (location || {}).pathname.split("/");
-    pathArr = pathArr.filter(n => n !== "");
-    return pathArr.length;
-}
 
 const ContentWrapper = styled.div`
     margin-top:15px;
@@ -21,78 +13,54 @@ const ContentWrapper = styled.div`
 
     .page{
         position:absolute;
+        width: 100%;
     }
 
-    .pageSliderLeft-enter {
+    .pageSlider-enter {
         opacity: 0;
-        transform: translate3d(100%, 0, 0);
     }
-    .pageSliderLeft-enter.pageSliderLeft-enter-active {
+    .pageSlider-enter.pageSlider-enter-active {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition: all 600ms;
+        transition: all 300ms ease;
     }
-    .pageSliderLeft-exit {
+    .pageSlider-exit {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
     }
-    .pageSliderLeft-exit.pageSliderLeft-exit-active {
+    .pageSlider-exit.pageSlider-exit-active {
         opacity: 0;
-        transform: translate3d(100%, 0, 0);
-        transition: all 600ms;
-    }
-
-    .pageSliderRight-enter {
-        opacity: 0;
-        transform: translate3d(-100%, 0, 0);
-    }
-    .pageSliderRight-enter.pageSliderRight-enter-active {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition: all 600ms;
-    }
-    .pageSliderRight-exit {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-    .pageSliderRight-exit.pageSliderRight-exit-active {
-        opacity: 0;
-        transform: translate3d(-100%, 0, 0);
-        transition: all 600ms;
+        transition: all 250ms ease;
     }
 `;
 
-class Content extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-          prevDepth: getPathDepth(props.location)
-        };
-      }
-    render(){
-        return(
-            <ContentWrapper>
-                <Route render={ ({ location }) =>
-                    (<TransitionGroup>
-                        <CSSTransition
-                            key={ location.pathname.split('/')[1] }
-                            timeout={ 500 }
-                            classNames={ getPathDepth(location) - this.state.prevDepth ? 'page pageSliderLeft' : 'page pageSliderRight'} 
-                            mountOnEnter={ true } 
-                            unmountOnExit={ true }>
-                                <Switch location={location}>
-                                    <Route path='/' exact component={ Home } />
-                                    <Route path='/devices' component={ Devices } />
-                                    <Route path='/members' component={ Members } />
-                                    <Route path='/location' component={ Location } />
-                                </Switch>
-                            </CSSTransition>
-                    </TransitionGroup>)
-                }
-                />
-            </ContentWrapper>
-        );
-    }
+function Content (props){
+    const devicesList = [
+        {name:'Bedroom Outlet 1', route:"bedroom-outlet-1", icon:'king_bed', color:'91c95a'},
+        {name:'Kitchen Outlet 1', route:"kitchen-outlet-1", icon:'kitchen', color:'fe6766'},
+        {name:'Living Room Outlet 1', route:"living-room-outlet-1", icon:'weekend', color:'b774ff'},
+        {name:'Bathroom Outlet 1', route:"bathroom-outlet-1", icon:'bathtub', color:'7dd1ff'},
+    ];
+
+    return(
+        <ContentWrapper>
+            <Route render={ ({ location }) =>
+                (<TransitionGroup>
+                    <CSSTransition
+                        key={ location.pathname.split('/')[2] }
+                        timeout={ 300 }
+                        classNames={ 'page pageSlider'} 
+                        mountOnEnter={ true } 
+                        unmountOnExit={ true }>
+                            <Switch location={location}>
+                                <Route exact path='/dashboard' render={() => <Home items={devicesList} />}/>
+                                <Route path='/dashboard/devices' render={() => <Devices items={devicesList} />}/>
+                                <Route path='/dashboard/settings' render={() => <Settings editable={props.editable} /> } />
+                            </Switch>
+                        </CSSTransition>
+                </TransitionGroup>)
+            }
+            />
+        </ContentWrapper>
+    );
 }
 
 export default withRouter(Content);

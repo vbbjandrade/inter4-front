@@ -1,21 +1,10 @@
 import React, { Component } from "react";
- 
-const Home = ({ links, location }) => {
-  const path_components = location.pathname.split("/");
-  const parent = "/" + path_components[path_components.length - 2];
-  const name = path_components[path_components.length - 1] || "Home";
+import Carousel from "./Carousel"; 
 
+const Home = (props) => {
   return (
     <div>
-      <h2>HELLO</h2>
-      <p>Cras facilisis urna ornare ex volutpat, et
-      convallis erat elementum. Ut aliquam, ipsum vitae
-      gravida suscipit, metus dui bibendum est, eget rhoncus nibh
-      metus nec massa. Maecenas hendrerit laoreet augue
-      nec molestie. Cum sociis natoque penatibus et magnis
-      dis parturient montes, nascetur ridiculus mus.</p>
-
-      <p>Duis a turpis sed lacus dapibus elementum sed eu lectus.</p>
+      <Carousel items={props.items}/>
     </div>
   );
 }
